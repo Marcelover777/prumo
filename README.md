@@ -68,18 +68,9 @@ Pronto. Ele começa pela entrevista e conduz o resto.
 
 ## A jornada
 
-```mermaid
-flowchart LR
-  A[Entrevista] --> B[Referências e<br>tendências]
-  B --> C[Direção]
-  C --> D[Identidade<br>e logo]
-  D --> E[Design<br>system]
-  E --> F[Telas]
-  F --> G[Movimento]
-  G --> H[Captura e<br>crítica]
-  H --> I[Polimento<br>e QA]
-  I --> J[Entrega]
-```
+> **Decidir:** Entrevista → Referências e tendências → Direção → Identidade e logo
+>
+> **Construir e conferir:** Design system → Telas → Movimento → Captura e crítica → Polimento → Entrega
 
 | Etapa | O que acontece | Você decide |
 |---|---|---|
