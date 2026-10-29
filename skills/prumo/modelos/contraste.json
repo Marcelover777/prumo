@@ -1,0 +1,4 @@
+{ "temas": {
+  "claro":  { "fundo": "oklch(0.985 0.003 250)", "superficie": "#ffffff", "texto-1": "oklch(0.16 0.012 250)", "texto-2": "oklch(0.37 0.015 250)", "borda": "oklch(0.86 0.008 250)", "acento": "oklch(0.52 0.12 160)", "acento-texto": "#ffffff", "perigo": "oklch(0.55 0.2 27)" },
+  "escuro": { "fundo": "oklch(0.16 0.012 250)", "superficie": "oklch(0.21 0.015 250)", "texto-1": "oklch(0.985 0.003 250)", "texto-2": "oklch(0.86 0.008 250)", "borda": "oklch(0.37 0.015 250)", "acento": "oklch(0.78 0.14 160)", "acento-texto": "oklch(0.16 0.012 250)", "perigo": "oklch(0.7 0.17 27)" } },
+  "pares": [["texto-1","fundo"],["texto-2","fundo"],["texto-2","superficie"],["acento-texto","acento"],["acento","fundo",3],["perigo","fundo"]] }

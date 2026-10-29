@@ -1,0 +1,90 @@
+/* Modelo de tokens. Copie para o projeto (ex.: src/styles/tokens.css) e troque os valores pela direção escolhida.
+   Três camadas: primitivos (a paleta crua) → semânticos (o papel de cada cor, por tema) → @theme (Tailwind v4).
+   Componente usa só semântico. Mudou valor aqui: atualize o DESIGN.md e rode scripts/contraste.mjs.
+
+   TEMAS — fique só com o que foi escolhido na entrevista:
+   · Só claro:  mantenha o bloco 2 e apague os blocos 2b e 2c.
+   · Só escuro: copie os valores do 2b para o bloco 2 e apague 2b e 2c.
+   · Os dois:   mantenha tudo. O tema segue o sistema; data-tema="claro" ou "escuro" no <html> força um deles
+                (para um seletor manual). */
+
+:root {
+  /* 1. Primitivos: escalas da marca (exemplo: neutro levemente frio + um acento verde) */
+  --neutro-50: oklch(0.985 0.003 250);
+  --neutro-100: oklch(0.96 0.005 250);
+  --neutro-300: oklch(0.86 0.008 250);
+  --neutro-500: oklch(0.55 0.012 250);
+  --neutro-700: oklch(0.37 0.015 250);
+  --neutro-900: oklch(0.21 0.015 250);
+  --neutro-950: oklch(0.16 0.012 250);
+  --acento-400: oklch(0.78 0.14 160);
+  --acento-600: oklch(0.52 0.12 160);
+
+  /* 2. Semânticos: tema claro */
+  color-scheme: light;
+  --fundo: var(--neutro-50);
+  --superficie: #ffffff;
+  --texto-1: var(--neutro-950);
+  --texto-2: var(--neutro-700);
+  --borda: var(--neutro-300);
+  --acento: var(--acento-600);
+  --acento-texto: #ffffff;
+  --perigo: oklch(0.55 0.2 27);
+
+  /* Forma, espaço, tipo e movimento também são token */
+  --raio-sm: 6px;
+  --raio-md: 10px;
+  --raio-lg: 16px;
+  --sombra-1: 0 1px 2px oklch(0.2 0.02 250 / 0.06), 0 2px 8px oklch(0.2 0.02 250 / 0.06);
+  --fonte-texto: "Nome da Fonte", system-ui, sans-serif;
+  --fonte-display: "Nome da Display", var(--fonte-texto);
+  --duracao-micro: 110ms;
+  --duracao-media: 240ms;
+  --curva-saida: cubic-bezier(0, 0, 0.38, 0.9);
+}
+
+/* 2b. Semânticos: tema escuro (paleta própria, não inversão), quando o sistema pede e ninguém forçou o claro */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-tema="claro"]) {
+    color-scheme: dark;
+    --fundo: var(--neutro-950);
+    --superficie: var(--neutro-900);
+    --texto-1: var(--neutro-50);
+    --texto-2: var(--neutro-300);
+    --borda: var(--neutro-700);
+    --acento: var(--acento-400);
+    --acento-texto: var(--neutro-950);
+    --perigo: oklch(0.7 0.17 27);
+  }
+}
+
+/* 2c. Tema escuro forçado pelo seletor (mesmos valores do 2b) */
+:root[data-tema="escuro"] {
+  color-scheme: dark;
+  --fundo: var(--neutro-950);
+  --superficie: var(--neutro-900);
+  --texto-1: var(--neutro-50);
+  --texto-2: var(--neutro-300);
+  --borda: var(--neutro-700);
+  --acento: var(--acento-400);
+  --acento-texto: var(--neutro-950);
+  --perigo: oklch(0.7 0.17 27);
+}
+
+/* 3. Tailwind v4: expõe os semânticos como classes (bg-fundo, text-texto-2, border-borda, rounded-md…).
+   Sem Tailwind, apague este bloco e use var(--…) direto no CSS. */
+@theme inline {
+  --color-fundo: var(--fundo);
+  --color-superficie: var(--superficie);
+  --color-texto-1: var(--texto-1);
+  --color-texto-2: var(--texto-2);
+  --color-borda: var(--borda);
+  --color-acento: var(--acento);
+  --color-acento-texto: var(--acento-texto);
+  --color-perigo: var(--perigo);
+  --radius-sm: var(--raio-sm);
+  --radius-md: var(--raio-md);
+  --radius-lg: var(--raio-lg);
+  --font-sans: var(--fonte-texto);
+  --font-display: var(--fonte-display);
+}

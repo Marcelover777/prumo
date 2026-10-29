@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prancha de decisão</title>
+<!--
+  Modelo da skill prumo. Copie para uma pasta do projeto (ex.: design/conceitos/), troque os dados do
+  array OPCOES e as imagens, e capture com scripts/capturar.mjs (1440 e 390). Sem dependências externas.
+  Uma dimensão por vez para decidir; território inteiro para explorar. Sempre com recomendação e objeção.
+-->
+<style>
+  :root {
+    color-scheme: light dark;
+    --fundo: #f4f4f2; --superficie: #ffffff; --texto-1: #17181a; --texto-2: #4a4d52; --borda: #d4d5d8;
+    --destaque: #17181a; --destaque-texto: #ffffff; --raio: 10px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --fundo: #121315; --superficie: #1b1d20; --texto-1: #eceef0; --texto-2: #a9adb3; --borda: #33363b;
+      --destaque: #eceef0; --destaque-texto: #121315; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--fundo); color: var(--texto-1);
+    font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width: 1440px; margin: 0 auto; padding: 32px 16px 48px; }
+  header { max-width: 72ch; margin-bottom: 24px; }
+  h1 { font-size: 26px; line-height: 1.15; margin: 0 0 8px; text-wrap: balance; }
+  header p { margin: 0; color: var(--texto-2); text-wrap: pretty; }
+  .grade { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+  .opcao { background: var(--superficie); border: 1px solid var(--borda); border-radius: var(--raio);
+    padding: 12px; display: flex; flex-direction: column; gap: 10px; }
+  .opcao.recomendada { outline: 2px solid var(--destaque); outline-offset: 2px; }
+  .visual { aspect-ratio: 4 / 3; border-radius: calc(var(--raio) - 4px); background: var(--fundo);
+    border: 1px solid var(--borda); display: grid; place-items: center; overflow: hidden; color: var(--texto-2); }
+  .visual img { width: 100%; height: 100%; object-fit: cover; }
+  .topo { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+  h2 { font-size: 17px; margin: 0; }
+  .selo { font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 99px;
+    background: var(--destaque); color: var(--destaque-texto); white-space: nowrap; }
+  .tese { margin: 0; text-wrap: pretty; }
+  dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; font-size: 14px; }
+  dt { color: var(--texto-2); }
+  dd { margin: 0; }
+  button { font: inherit; min-height: 44px; padding: 8px 14px; border-radius: 8px; cursor: pointer;
+    border: 1px solid var(--borda); background: transparent; color: var(--texto-1); }
+  button:hover { border-color: var(--texto-1); }
+  button:focus-visible { outline: 2px solid var(--destaque); outline-offset: 2px; }
+  .recomendacao { margin-top: 24px; padding: 16px; border: 1px solid var(--texto-2);
+    background: var(--superficie); border-radius: var(--raio); max-width: 72ch; }
+  .recomendacao h2 { margin-bottom: 6px; }
+  .recomendacao p { margin: 0 0 6px; }
+  #aviso { min-height: 1.5em; color: var(--texto-2); font-size: 14px; }
+  @media (prefers-reduced-motion: no-preference) { button { transition: border-color 110ms ease-out; } }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1 id="titulo">[O que está em decisão]</h1>
+    <p id="contexto">[Uma frase: trabalho da peça, dimensão que varia e o que fica fixo.]</p>
+  </header>
+
+  <section class="grade" id="grade" aria-label="Opções"></section>
+
+  <section class="recomendacao" aria-labelledby="rec-titulo">
+    <h2 id="rec-titulo">Recomendação</h2>
+    <p id="rec-texto">[Qual opção e por quê, em duas frases.]</p>
+    <p><strong>Principal objeção:</strong> <span id="rec-objecao">[O que pesa contra a recomendada.]</span></p>
+  </section>
+
+  <p id="aviso" role="status" aria-live="polite"></p>
+</main>
+
+<script>
+  // Troque estes dados. "imagem" é opcional (caminho relativo a esta página).
+  const OPCOES = [
+    { id: 'A', nome: '[Nome A]', tese: '[Tese em uma frase.]', imagem: '',
+      pros: '[O que ganha.]', contras: '[O que perde.]', risco: '[Risco assumido.]' },
+    { id: 'B', nome: '[Nome B]', tese: '[Tese em uma frase.]', imagem: '',
+      pros: '[O que ganha.]', contras: '[O que perde.]', risco: '[Risco assumido.]', recomendada: true },
+    { id: 'C', nome: '[Nome C]', tese: '[Tese em uma frase.]', imagem: '',
+      pros: '[O que ganha.]', contras: '[O que perde.]', risco: '[Risco assumido.]' },
+  ];
+
+  const grade = document.getElementById('grade');
+  const aviso = document.getElementById('aviso');
+  const el = (tag, attrs = {}, texto) => {
+    const n = document.createElement(tag);
+    Object.entries(attrs).forEach(([k, v]) => n.setAttribute(k, v));
+    if (texto !== undefined) n.textContent = texto;
+    return n;
+  };
+
+  for (const o of OPCOES) {
+    const card = el('article', { class: 'opcao' + (o.recomendada ? ' recomendada' : ''), 'aria-labelledby': 'op-' + o.id });
+    const visual = el('div', { class: 'visual' });
+    if (o.imagem) visual.append(el('img', { src: o.imagem, alt: 'Opção ' + o.id + ': ' + o.nome }));
+    else visual.textContent = 'Opção ' + o.id;
+    const topo = el('div', { class: 'topo' });
+    topo.append(el('h2', { id: 'op-' + o.id }, o.id + ') ' + o.nome));
+    if (o.recomendada) topo.append(el('span', { class: 'selo' }, 'Recomendada'));
+    const dl = el('dl');
+    [['Ganha', o.pros], ['Perde', o.contras], ['Risco', o.risco]].forEach(([t, d]) => {
+      dl.append(el('dt', {}, t), el('dd', {}, d));
+    });
+    const botao = el('button', { type: 'button' }, 'Escolher ' + o.id);
+    botao.addEventListener('click', async () => {
+      const texto = 'Escolho a opção ' + o.id + ' (' + o.nome + ') da prancha "' +
+        document.getElementById('titulo').textContent + '".';
+      try { await navigator.clipboard.writeText(texto); aviso.textContent = 'Copiado: ' + texto; }
+      catch { aviso.textContent = texto; }
+    });
+    card.append(visual, topo, el('p', { class: 'tese' }, o.tese), dl, botao);
+    grade.append(card);
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 400" width="1280" height="400" role="img" aria-label="Prumo: design de verdade com o Claude Code">
+  <rect width="1280" height="400" rx="20" fill="#1b1f25"/>
+  <!-- grade de obra: linhas-guia finas -->
+  <g stroke="#343a43" stroke-width="1">
+    <line x1="0" y1="300" x2="1280" y2="300"/>
+    <line x1="0" y1="100" x2="1280" y2="100" stroke-dasharray="4 8"/>
+  </g>
+  <!-- o prumo: fio de pedreiro e peso -->
+  <line x1="200" y1="0" x2="200" y2="236" stroke="#ff8a4c" stroke-width="3"/>
+  <rect x="189" y="238" width="22" height="8" rx="2" fill="#eef0f3"/>
+  <path d="M176 248 H224 L200 300 Z" fill="#eef0f3"/>
+  <!-- nome e frase -->
+  <text x="300" y="206" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="132" font-weight="800" letter-spacing="-5" fill="#eef0f3">prumo</text>
+  <text x="306" y="274" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="28" fill="#a9b0ba">design de verdade com o Claude Code: decide antes, confere depois</text>
+</svg>
